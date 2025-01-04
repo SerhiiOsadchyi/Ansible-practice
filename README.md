@@ -1,0 +1,1 @@
+ansible-playbook -i demo-server config.yml -K
