@@ -62,4 +62,4 @@
             append: true
 
         - name: System reboot
-          ansible.builtin.reboot:  
+          ansible.builtin.reboot:
