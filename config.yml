@@ -3,6 +3,7 @@
   hosts: demo
   tasks:
     - name: Install Docker
+      become: true
       block:
         - name: Add universe packages
           ansible.builtin.apt_repository:
@@ -20,10 +21,10 @@
         - name: Folder of the keyrings must be exists
           ansible.builtin.file:
             state: directory
-            mode: 0755
+            mode: "0755"
             path: /etc/apt/keyrings
 
-        - name: Install the APT key of Docker's APT repo        
+        - name: Install the APT key of Docker's APT repo
           ansible.builtin.get_url:
             url: https://download.docker.com/linux/ubuntu/gpg
             dest: /etc/apt/keyrings/docker.asc
@@ -46,24 +47,19 @@
             update_cache: true
 
         - name: Start Docker service
-          service: 
+          ansible.builtin.service:
             name: docker
             state: restarted
             enabled: true
 
-      become: true
-
     - name: Final
+      become: true
       block:
         - name: Add user to Docker group
-          user: 
+          ansible.builtin.user:
             name: "{{ ansible_user }}"
             groups: docker
             append: true
 
         - name: System reboot
-          reboot:
-
-      become: true
-          
-            
+          ansible.builtin.reboot:  
