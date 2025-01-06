@@ -34,15 +34,22 @@
           ansible.builtin.apt_repository:
             filename: docker
             repo: >
-              deb [arch={{ ansible_architecture }} signed-by=/etc/apt/keyrings/docker.asc]
+              deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc]
               https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
             state: present
             update_cache: true
-          debugger: on_failed
+          register: out
+        - debug:
+            var: out
 
         - name: Install Docker-ce
           ansible.builtin.apt:
-            name: ["docker-ce", "docker-ce-cli", "containerd.io", "docker-buildx-plugin", "docker-compose-plugin"]
+            name: 
+              - docker-ce
+              - docker-ce-cli
+              - containerd.io
+              - docker-buildx-plugin
+              - docker-compose-plugin
             state: present
             update_cache: true
 
