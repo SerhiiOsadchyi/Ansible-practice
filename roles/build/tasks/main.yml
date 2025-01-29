@@ -1,0 +1,31 @@
+---
+- name: Install Docker repositiry
+  ansible.builtin.command: docker run --rm -d -p 5000:5000 --name local-registry registry:2
+
+- name: Clone repository
+  ansible.builtin.git:
+    repo: "https://github.com/SerhiiOsadchyi/docker-demo"
+    dest: "{{ build_git_folder }}"
+    version: block-14
+
+- name: Print registry_name
+  ansible.builtin.debug:
+    msg: registry_name {{ registry_name }}
+
+- name: Building image
+  community.docker.docker_image:
+    name: "{{ registry_name }}{{ item.service_name }}"
+    tag: "{{ item.service_version }}"
+    force_source: true
+    force_tag: true
+    push: true
+    source: "build"
+    build:
+      path: "{{ build_git_folder }}"
+      dockerfile: "{{ build_git_folder }}/apps/{{ item.service_name }}/Dockerfile"
+  loop: "{{ services | difference(non_build_services) }}"
+
+- name: Clean repository
+  ansible.builtin.file:
+    path: "{{ build_git_folder }}"
+    state: absent

@@ -1,0 +1,11 @@
+- name: Swarm init
+  community.docker.docker_swarm:
+    state: present
+  register: token
+
+- name: Save tokens
+  ansible.builtin.set_fact:
+    token_manager: "{{ token.swarm_facts.JoinTokens.Manager }}"
+    token_worker: "{{ token.swarm_facts.JoinTokens.Worker }}"
+    cacheable: yes
+  notify: Test

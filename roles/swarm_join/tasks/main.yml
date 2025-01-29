@@ -1,0 +1,42 @@
+# - name: Get facts
+#   ansible.builtin.debug:
+#     msg: Facts from server1 {{ hostvars['server1']['ansible_facts'] }}
+#   register: token
+
+- name: Print token_manager from server2
+  ansible.builtin.debug:
+    var: hostvars['server1']['ansible_facts']['token_manager']
+
+- name: Print token_worker from server2
+  ansible.builtin.debug:
+    var: hostvars['server1']['ansible_facts']['token_worker']
+
+- name: Print type from server2
+  ansible.builtin.debug:
+    var: type
+
+- name: Print token from server2
+  ansible.builtin.debug:
+    var: >-
+      {{
+        hostvars['server1']['ansible_facts']['token_manager']
+        if type == 'manager' else
+        hostvars['server1']['ansible_facts']['token_worker']
+      }}
+
+# - name: Print all available facts
+#   ansible.builtin.debug:
+#     var: ansible_facts
+
+- name: Swarm join
+  community.docker.docker_swarm:
+    state: join
+    advertise_addr: "{{ swarm_addr }}"
+    remote_addrs: "{{ swarm_addr }}"
+    join_token: >-
+      {{
+        hostvars['server1']['ansible_facts']['token_manager']
+        if type == "manager" else
+        hostvars['server1']['ansible_facts']['token_worker']
+      }}
+
