@@ -13,14 +13,14 @@
 
 - name: Print type from server2
   ansible.builtin.debug:
-    var: type
+    var: swarm_join_type
 
 - name: Print token from server2
   ansible.builtin.debug:
     var: >-
       {{
         hostvars['server1']['ansible_facts']['token_manager']
-        if type == 'manager' else
+        if swarm_join_type == 'manager' else
         hostvars['server1']['ansible_facts']['token_worker']
       }}
 
@@ -36,7 +36,6 @@
     join_token: >-
       {{
         hostvars['server1']['ansible_facts']['token_manager']
-        if type == "manager" else
+        if swarm_join_type == "manager" else
         hostvars['server1']['ansible_facts']['token_worker']
       }}
-

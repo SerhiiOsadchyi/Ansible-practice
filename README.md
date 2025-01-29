@@ -21,3 +21,6 @@ http://localhost:5000/
 ansible-playbook -i inventory all.yml --tags "deploy"
 
 ansible-playbook -i inventory all.yml --tags "swarm_init, swarm_join"
+
+pre-commit run --all-files
+sudo rm -rf .git/hooks/pre-commit

@@ -3,9 +3,9 @@ rmq_defaults:
   - name: AMQP_EXCHANGE
     value: xchg_integrations
   - name: AMQP_USER
-    value: "{{rmq.user}}"
+    value: "{{ rmq.user }}"
   - name: AMQP_PASSWORD
-    value: "{{rmq.password}}"
+    value: "{{ rmq.password }}"
   - name: AMQP_HOSTNAME
     value: rmq
 

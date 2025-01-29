@@ -1,6 +1,7 @@
 ---
 - name: Install Docker repositiry
   ansible.builtin.command: docker run --rm -d -p 5000:5000 --name local-registry registry:2
+  changed_when: false
 
 - name: Clone repository
   ansible.builtin.git:

@@ -16,7 +16,7 @@
     - role: preconfig
       tags: preconfig
     - role: swarm_join
-      type: manager
+      swarm_join_type: manager
       tags: swarm_join
 
 - name: Worker
@@ -25,5 +25,5 @@
     - role: preconfig
       tags: preconfig
     - role: swarm_join
-      type: worker
+      swarm_join_type: worker
       tags: swarm_join
