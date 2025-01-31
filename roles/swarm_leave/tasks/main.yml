@@ -1,0 +1,23 @@
+---
+- name: Switch to drain status
+  community.docker.docker_node:
+    hostname: "{{ node_name }}"
+    availability: drain
+
+- name: Wait for stop
+  community.docker.docker_host_info:
+    containers: true
+  register: result
+  retries: 30
+  delay: 2
+  until: result.host_info.ContainersRunning == 0
+  delegate_to: "{{ node_name }}"
+
+- name: Delete node
+  community.docker.docker_swarm:
+    state: absent
+    node_id: "{{ node_name }}"
+    force: true
+
+# - name: Delete node
+#   command: "docker node rm {{ node_name }} --force"

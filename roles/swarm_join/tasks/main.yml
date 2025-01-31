@@ -1,41 +1,76 @@
+---
+- name: Print type node
+  ansible.builtin.debug:
+    var: swarm_join_type
+
+- name: Swarm join
+  vars:
+    token: "{{ lookup('file', '../../tokens/token-{{ swarm_join_type }}') }}"
+  ansible.builtin.command: docker swarm join --token {{ token }} {{ swarm_addr }}:2377
+
+
+# - name: Swarm join
+#   vars:
+#     token: "{{ lookup('file', '../../tokens/token-{{ swarm_join_type }}') }}"
+#   community.docker.docker_swarm:
+#     state: join
+#     advertise_addr: "{{ swarm_addr }}"
+#     remote_addrs: "{{ swarm_addr }}"
+#     join_token: "{{ token }}"
+
+# - name: Swarm join
+#   vars:
+#     token: "{{ lookup('file', '../../tokens/token-worker') }}"
+#   community.docker.docker_swarm:
+#     state: join
+#     advertise_addr: "{{ swarm_addr }}"
+#     remote_addrs: "{{ swarm_addr }}"
+#     join_token: "{{ token }}"
+
+# - name: Set node role
+#   community.docker.docker_node:
+#     hostname: server2
+#     role: manager
+
+
 # - name: Get facts
 #   ansible.builtin.debug:
 #     msg: Facts from server1 {{ hostvars['server1']['ansible_facts'] }}
 #   register: token
 
-- name: Print token_manager from server2
-  ansible.builtin.debug:
-    var: hostvars['server1']['ansible_facts']['token_manager']
-
-- name: Print token_worker from server2
-  ansible.builtin.debug:
-    var: hostvars['server1']['ansible_facts']['token_worker']
-
-- name: Print type from server2
-  ansible.builtin.debug:
-    var: swarm_join_type
-
-- name: Print token from server2
-  ansible.builtin.debug:
-    var: >-
-      {{
-        hostvars['server1']['ansible_facts']['token_manager']
-        if swarm_join_type == 'manager' else
-        hostvars['server1']['ansible_facts']['token_worker']
-      }}
-
 # - name: Print all available facts
 #   ansible.builtin.debug:
 #     var: ansible_facts
 
-- name: Swarm join
-  community.docker.docker_swarm:
-    state: join
-    advertise_addr: "{{ swarm_addr }}"
-    remote_addrs: "{{ swarm_addr }}"
-    join_token: >-
-      {{
-        hostvars['server1']['ansible_facts']['token_manager']
-        if swarm_join_type == "manager" else
-        hostvars['server1']['ansible_facts']['token_worker']
-      }}
+# - name: Print token from server2
+#   ansible.builtin.debug:
+#     var: >-
+#       {{
+#         hostvars['server1']['ansible_facts']['token_manager']
+#         if swarm_join_type == 'manager' else
+#         hostvars['server1']['ansible_facts']['token_worker']
+#       }}
+
+# - name: Print token_manager from server2
+#   ansible.builtin.debug:
+#     var: hostvars['server1']['ansible_facts']['token_manager']
+
+# - name: Print token_worker from server2
+#   ansible.builtin.debug:
+#     var: hostvars['server1']['ansible_facts']['token_worker']
+
+# - name: Print type from server2
+#   ansible.builtin.debug:
+#     var: swarm_join_type
+
+# - name: Swarm join
+#   community.docker.docker_swarm:
+#     state: join
+#     advertise_addr: "{{ swarm_addr }}"
+#     remote_addrs: "{{ swarm_addr }}"
+#     join_token: >-
+#       {{
+#         hostvars['server1']['ansible_facts']['token_manager']
+#         if swarm_join_type == "manager" else
+#         hostvars['server1']['ansible_facts']['token_worker']
+#       }}

@@ -9,6 +9,9 @@
       tags: deploy
     - role: swarm_init
       tags: swarm_init
+    - role: swarm_leave
+      node_name: "server1"
+      tags: swarm_leave
 
 - name: Manager
   hosts: managers
@@ -27,3 +30,4 @@
     - role: swarm_join
       swarm_join_type: worker
       tags: swarm_join
+
