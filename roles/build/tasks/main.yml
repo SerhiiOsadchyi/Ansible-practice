@@ -15,15 +15,15 @@
 
 - name: Building image
   community.docker.docker_image:
-    name: "{{ registry_name }}{{ item.service_name }}"
-    tag: "{{ item.service_version }}"
+    name: "{{ registry_name }}{{ item.name }}"
+    tag: "{{ item.version }}"
     force_source: true
     force_tag: true
     push: true
     source: "build"
     build:
       path: "{{ build_git_folder }}"
-      dockerfile: "{{ build_git_folder }}/apps/{{ item.service_name }}/Dockerfile"
+      dockerfile: "{{ build_git_folder }}/apps/{{ item.name }}/Dockerfile"
   loop: "{{ services | difference(non_build_services) }}"
 
 - name: Clean repository

@@ -1,16 +1,17 @@
-- name: "[{{ service_name }}]: Config configuration"
-  include: "../config.yml"
+- name: "[{{ name }}]: Config configuration"
+  ansible.builtin.include_tasks:
+    file: "../config.yml"
   loop:
     - nginx.conf
   loop_control:
     loop_var: config_item
 
-- name: "[{{ service_name }}]: Service deployment"
+- name: "[{{ name }}]: Service deployment"
   block:
-    - name: "[{{ service_name }}]: Deploy service"
+    - name: "[{{ name }}]: Deploy service"
       community.docker.docker_swarm_service:
-        name: "{{ service_name }}"
-        image: "nginx:{{ service_version }}"
+        name: "{{ name }}"
+        image: "nginx:{{ version }}"
         networks:
           - name: "{{ deploy_network_name }}"
         publish:
@@ -21,4 +22,4 @@
         configs:
           - config_name: nginx.conf
             filename: "/etc/nginx/nginx.conf"
-  tags: "{{ service_name }}"
+  tags: "{{ name }}"

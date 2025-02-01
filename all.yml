@@ -30,4 +30,3 @@
     - role: swarm_join
       swarm_join_type: worker
       tags: swarm_join
-

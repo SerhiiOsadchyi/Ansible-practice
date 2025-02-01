@@ -1,13 +1,14 @@
 ---
-- name: "[{{ service_name }}]: Secret config"
-  include: "../secret.yml"
+- name: "[{{ name }}]: Secret config"
+  ansible.builtin.include_tasks:
+    file: "../secret.yml"
 
-- name: "[{{ service_name }}]: Service deployment"
+- name: "[{{ name }}]: Service deployment"
   block:
-    - name: "[{{ service_name }}]: Deploy service"
+    - name: "[{{ name }}]: Deploy service"
       community.docker.docker_swarm_service:
-        name: "{{ service_name }}"
-        image: "{{ registry_name }}{{ service_name }}:{{ service_version }}"
+        name: "{{ name }}"
+        image: "{{ registry_name }}{{ name }}:{{ version }}"
         force_update: true
         networks:
           - name: "{{ deploy_network_name }}"
@@ -17,6 +18,6 @@
             published_port: 3002
             target_port: 3000
         secrets:
-          - secret_name: "{{ service_name }}.env"
+          - secret_name: "{{ name }}.env"
             filename: "/opt/app/.env"
-  tags: "{{ service_name }}"
+  tags: "{{ name }}"

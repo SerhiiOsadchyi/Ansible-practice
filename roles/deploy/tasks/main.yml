@@ -9,5 +9,5 @@
     file: "../services/{{ item.name }}/service.yml"
   loop: "{{ services }}"
   vars:
-    service_name: "{{ item.name }}"
-    service_version: "{{ item.version }}"
+    name: "{{ item.name }}"
+    version: "{{ item.version }}"

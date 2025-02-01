@@ -1,9 +1,9 @@
-- name: "[{{ service_name }}]: Service deployment"
+- name: "[{{ name }}]: Service deployment"
   block:
-    - name: "[{{ service_name }}]: Deploy service"
+    - name: "[{{ name }}]: Deploy service"
       community.docker.docker_swarm_service:
-        name: "{{ service_name }}"
-        image: "{{ registry_name }}{{ service_name }}:{{ service_version }}"
+        name: "{{ name }}"
+        image: "{{ registry_name }}{{ name }}:{{ version }}"
         force_update: true
         networks:
           - name: "{{ deploy_network_name }}"
@@ -12,4 +12,4 @@
             protocol: "tcp"
             published_port: 3001
             target_port: 80
-  tags: "{{ service_name }}"
+  tags: "{{ name }}"

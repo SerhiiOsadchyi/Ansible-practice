@@ -12,22 +12,22 @@ rmq_defaults:
 registry_name: "localhost:5000/"
 
 services:
-  - service_name: api
-    service_version: latest
-  - service_name: app
-    service_version: latest
-  - service_name: converter
-    service_version: latest
-  - service_name: rmq
-    service_version: 3-management
-  - service_name: nginx
-    service_version: latest
+  - name: api
+    version: latest
+  - name: app
+    version: latest
+  - name: converter
+    version: latest
+  - name: rmq
+    version: 3-management
+  - name: nginx
+    version: latest
 
 non_build_services:
-  - service_name: rmq
-    service_version: 3-management
-  - service_name: nginx
-    service_version: latest
+  - name: rmq
+    version: 3-management
+  - name: nginx
+    version: latest
 
 configs:
   converter:

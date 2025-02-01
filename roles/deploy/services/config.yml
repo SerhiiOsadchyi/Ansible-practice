@@ -1,7 +1,8 @@
 - name: "[{{ name }}]: Config configuration"
   block:
     - name: "[{{ name }}] Create config"
-      include: "config-create.yml"
+      ansible.builtin.include_tasks:
+        file: "config-create.yml"
   tags: "{{ name }}"
 
   rescue:
@@ -11,4 +12,5 @@
         state: absent
 
     - name: "[{{ name }}] Create config"
-      include: "config-create.yml"
+      ansible.builtin.include_tasks:
+        file: "config-create.yml"
