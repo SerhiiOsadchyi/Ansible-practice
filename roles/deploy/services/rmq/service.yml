@@ -4,6 +4,7 @@
       community.docker.docker_swarm_service:
         name: "{{ name }}"
         image: "rabbitmq:{{ version }}"
+        state: present
         networks:
           - name: "{{ deploy_network_name }}"
         env:
