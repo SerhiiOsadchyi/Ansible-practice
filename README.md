@@ -25,3 +25,5 @@ ansible-playbook -i inventory all.yml --tags "swarm_init, swarm_join"
 
 pre-commit run --all-files
 sudo rm -rf .git/hooks/pre-commit
+
+http://image.local:8080
